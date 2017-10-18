@@ -6,10 +6,6 @@
 import gzip
 import numpy as np
 
-# path to the images
-train_images = 'data/train-images-idx3-ubyte.gz'
-test_images = 'data/t10k-images-idx3-ubyte.gz'
-
 # Part 1
 def read_images(filename):
     with gzip.open(filename, 'rb') as f:
@@ -42,5 +38,22 @@ def read_images(filename):
     
     return images
 
-read_images(train_images)
-read_images(test_images)
+# output the third image in the traning set to the console
+    # any pixel less than 128 is a '.', anything else is a '#'
+# Author: Dillon Ward (Dillonward2017@gmail.com)
+# Date: 18/10/2017
+
+train_images = read_images('data/train-images-idx3-ubyte.gz')
+test_images = read_images('data/t10k-images-idx3-ubyte.gz')
+
+for img in train_images:
+    for row in img:
+        for col in row:
+            if col <= 127:
+                 print('.')
+
+            else:
+                print ('#')
+
+        print() # New line to break up imgs
+
