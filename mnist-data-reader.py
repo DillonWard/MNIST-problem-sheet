@@ -44,16 +44,15 @@ def read_images(filename):
 # Date: 18/10/2017
 
 train_images = read_images('data/train-images-idx3-ubyte.gz')
-test_images = read_images('data/t10k-images-idx3-ubyte.gz')
+# test_images = read_images('data/t10k-images-idx3-ubyte.gz')
 
 for img in train_images:
-    for row in img:
-        for col in row:
+    for row in range(img):
+        for col in range(row):
             if col <= 127:
-                 print('.')
+                print('.', end='')
 
             else:
-                print ('#')
-
-        print() # New line to break up imgs
-
+                print ('#', end='')
+        print()
+        
