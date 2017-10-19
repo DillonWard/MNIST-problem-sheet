@@ -23,20 +23,10 @@ def read_images(filename):
         print('Rows:{:>20}'.format(rows))
         print('Cols: {:>19}'.format(cols))
 
-        # list of images
-        images = []
-
         # loop for the amount of images
-        for i in range(imgs):
-            no_rows = []
-            for r in range(rows):
-                no_cols = []
-                for c in range(cols):
-                    no_cols.append(int.from_bytes(f.read(1), 'big'))
-                no_rows.append(cols)
-            images.append(rows)
-    
-    return images
+        images = [[int.from_bytes(f.read(1), 'big') for i in range(rows * cols)] for j in range(10)]
+        # print(images)
+        return images
 
 # output the third image in the traning set to the console
     # any pixel less than 128 is a '.', anything else is a '#'
@@ -46,13 +36,11 @@ def read_images(filename):
 train_images = read_images('data/train-images-idx3-ubyte.gz')
 # test_images = read_images('data/t10k-images-idx3-ubyte.gz')
 
-for img in train_images:
-    for row in range(img):
-        for col in range(row):
-            if col <= 127:
-                print('.', end='')
+for r in train_images:
+    # if r % 28 == 0:
+    #     print()
 
-            else:
-                print ('#', end='')
-        print()
-        
+    if (train_images[r] <= 127):
+        print('.', end='')
+    else:
+        print ('#', end='')
