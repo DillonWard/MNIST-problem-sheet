@@ -25,7 +25,6 @@ def read_images(filename):
 
         # loop for the amount of images
         images = [[int.from_bytes(f.read(1), 'big') for i in range(rows * cols)] for j in range(10)]
-        # print(images)
         return images
 
 # output the third image in the traning set to the console
@@ -36,11 +35,12 @@ def read_images(filename):
 train_images = read_images('data/train-images-idx3-ubyte.gz')
 # test_images = read_images('data/t10k-images-idx3-ubyte.gz')
 
-for r in train_images:
-    # if r % 28 == 0:
-    #     print()
-
-    if (train_images[r] <= 127):
+    
+for j in range(len(train_images[2])):
+    if j % 28 == 0:
+        print()
+    if (train_images[2][j] <= 127):
         print('.', end='')
     else:
         print ('#', end='')
+print()
