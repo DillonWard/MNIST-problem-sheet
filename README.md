@@ -30,7 +30,8 @@ py <program name>.py
 ```
 
 ## MNIST
-
+### What is MNIST?
+The MNIST database (Modified National Institute of Standards and Technology database) is a large database of handwritten digits that is commonly used for training various image processing systems, and is widely used in the field of machine learning. The MNIST database contains 60,000 traning images and 10,000 test images. Each image in the dataset is 28 by 28 pixels and can be interpreted as a big 2D array of numbers.
 
 <a href="https://emerging-technologies.github.io/problems/mnist.html" target="_blank">Worksheet</a>
 ----
