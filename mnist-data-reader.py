@@ -1,5 +1,6 @@
 # (1) Adapted from https://stackoverflow.com/questions/273192/how-can-i-create-a-directory-if-it-does-not-exist
 # (2) Adapted from https://stackoverflow.com/questions/902761/saving-a-numpy-array-as-an-image
+
 # decompresses and reads files byte by byte
 # Author: Dillon Ward (Dillonward2017@gmail.com)
 # Date: 16/10/2017
@@ -9,7 +10,7 @@ import gzip
 # import numpy for using lists
 import numpy as np
 # import PIL.Image to save images to a file
-import PIL.Image as pil 
+from PIL import Image
 # import os to see if path exists and create one
 import os
 
@@ -35,8 +36,10 @@ def read_images(file):
         print()
         # loop for and read in all the bytes for the length of rows * columns
         # only loops through the first 11 images because range is set to 10
-        # if you want to loop through all of the images, change '10' to 'imgs'
-        images = [[int.from_bytes(f.read(1), 'big') for i in range(rows * cols)] for j in range(11)]
+        # if you want to loop through all of the images, change 'img / 2400' to just 'img'
+        # this will print out only 25 images
+        images = [[[int.from_bytes(f.read(1), byteorder="big")for i in range(rows)] for j in range(cols)] for k in range(int(imgs / 2400))]
+
         return images
 
 # output the third image in the traning set to the console
@@ -46,22 +49,23 @@ def read_images(file):
 
 # Part 2
 def image_to_console(file):
-    # selects the 3 image from the file
-    for j in range(len(file[2])):
-        # use a counter, if the counter is divisable by 28 (the length of a row)
-            # print out a new line
-        if j % 28 == 0:
-            print()
+    for i in file:
+        # selects the 3 image from the file
+        for j in i:
+            # use a counter, if the counter is divisable by 28 (the length of a row)
+                # print out a new line
+            # if j % 28 == 0:
+            #     print()
 
-            # if the byte being read in is less than or equal to 127
-            # print '.'
-        if (file[2][j] <= 127):
-            print('.', end='')
+                # if the byte being read in is less than or equal to 127
+                # print '.'
+            if (j <= 127):
+                print('.', end='')
 
-        # otherwise, print '#'    
-        else:
-            print ('#', end='')
-    print()
+            # otherwise, print '#'    
+            else:
+                print ('#', end='')
+        print()
 
 # output the files as PNGs and save them
 # Author: Dillon Ward (Dillonward2017@gmail.com)
@@ -85,11 +89,10 @@ def read_labels(file):
 def save_image(image, name, num, label):
 
     # save the file as a png from an array - ref: (2)
-    image_name = 'images/%s-%05d-%d.png'
-    img = pil.fromarray(image).convert('RGB')
-    img.save(image_name %(name, num, label))
-    return
-
+    repos = 'images/%s-%05d-%d.png'
+    img = Image.fromarray(np.array(image)).convert('RGB')
+    img.save(repos %(name, num, label), 'PNG')
+    img.show()
 
 train_labels = read_labels(train_imgs_dir)
 # test_labels = read_labels(test_imgs_dir)
@@ -97,15 +100,15 @@ train_labels = read_labels(train_imgs_dir)
 train_images = read_images(train_imgs_dir)
 # test_images = read_images(test_imgs_dir)
 
-image_to_console(train_images)
+image_to_console(train_images[2])
 
 # checks if the directory 'images' exists locally - if it doesn't, create it - ref: (1)
 if not os.path.exists('images'):
     os.makedirs('images')
-
 
 # loop for the amount of train images
 for i in range(len(train_images)):
     # parameters being sent to the 'save_image' function are being passed from an array
     # continuously make new images for the amount of images/labels read in
     save_image(train_images[i], 'train', (i+1), train_labels[i]) # image format
+    # save_image(test_images[i], 'train', (i+1), test_images[i]) # image format
