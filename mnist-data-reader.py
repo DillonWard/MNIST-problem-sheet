@@ -1,3 +1,5 @@
+# (1) Adapted from https://stackoverflow.com/questions/273192/how-can-i-create-a-directory-if-it-does-not-exist
+# (2) Adapted from https://stackoverflow.com/questions/902761/saving-a-numpy-array-as-an-image
 # decompresses and reads files byte by byte
 # Author: Dillon Ward (Dillonward2017@gmail.com)
 # Date: 16/10/2017
@@ -8,6 +10,8 @@ import gzip
 import numpy as np
 # import PIL.Image to save images to a file
 import PIL.Image as pil 
+# import os to see if path exists and create one
+import os
 
 train_imgs_dir = 'data/train-images-idx3-ubyte.gz'
 test_imgs_dir = 'data/t10k-labels-idx1-ubyte.gz'
@@ -40,10 +44,11 @@ def read_images(file):
 # Author: Dillon Ward (Dillonward2017@gmail.com)
 # Date: 18/10/2017
 
+# Part 2
 def image_to_console(file):
     # selects the 3 image from the file
     for j in range(len(file[2])):
-        # use a counter, if the counter is divisable by 28 (the length of a row) 
+        # use a counter, if the counter is divisable by 28 (the length of a row)
             # print out a new line
         if j % 28 == 0:
             print()
@@ -62,6 +67,7 @@ def image_to_console(file):
 # Author: Dillon Ward (Dillonward2017@gmail.com)
 # Date: 20/10/2017
 
+# Part 3
 def read_labels(file):
     with gzip.open(file, 'rb') as f:
         # reads in the magic number
@@ -76,6 +82,15 @@ def read_labels(file):
         return labels
 
 
+def save_image(image, name, num, label):
+
+    # save the file as a png from an array - ref: (2)
+    image_name = 'images/%s-%05d-%d.png'
+    img = pil.fromarray(image).convert('RGB')
+    img.save(image_name %(name, num, label))
+    return
+
+
 train_labels = read_labels(train_imgs_dir)
 # test_labels = read_labels(test_imgs_dir)
 
@@ -83,3 +98,14 @@ train_images = read_images(train_imgs_dir)
 # test_images = read_images(test_imgs_dir)
 
 image_to_console(train_images)
+
+# checks if the directory 'images' exists locally - if it doesn't, create it - ref: (1)
+if not os.path.exists('images'):
+    os.makedirs('images')
+
+
+# loop for the amount of train images
+for i in range(len(train_images)):
+    # parameters being sent to the 'save_image' function are being passed from an array
+    # continuously make new images for the amount of images/labels read in
+    save_image(train_images[i], 'train', (i+1), train_labels[i]) # image format
