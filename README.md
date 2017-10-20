@@ -1,4 +1,4 @@
-# MNIST Problem Sheet
+## MNIST Problem Sheet
 ###### *Dillon Ward - G00326756 - Emerging Technologies*
 ---
 ## Introduction
